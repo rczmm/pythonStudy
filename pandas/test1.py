@@ -122,6 +122,63 @@ class Solution(object):
         else:
             return [-1, -1]
 
+    def isValidSudoku(self, board:list) -> bool:
+        rows = [set() for _ in range(9)]
+        cols = [set() for _ in range(9)]
+        boxes = [set() for _ in range(9)]
+
+        for i in range(9):
+            for j in range(9):
+                num = board[i][j]
+                if num == ".":
+                    continue
+
+                box_index = (i // 3) * 3 + (j // 3)
+
+                # 检查是否有重复
+                if num in rows[i] or num in cols[j] or num in boxes[box_index]:
+                    return False
+
+                # 添加到对应集合中
+                rows[i].add(num)
+                cols[j].add(num)
+                boxes[box_index].add(num)
+
+        return True
+
+    def solve(self, board:list) -> list:
+        def is_valid(board, row, col, num):
+            # 检查行
+            for i in range(9):
+                if board[row][i] == num:
+                    return False
+            # 检查列
+            for i in range(9):
+                if board[i][col] == num:
+                    return False
+            # 检查3x3宫格
+            start_row, start_col = 3 * (row // 3), 3 * (col // 3)
+            for i in range(start_row, start_row + 3):
+                for j in range(start_col, start_col + 3):
+                    if board[i][j] == num:
+                        return False
+            return True
+
+        def backtrack():
+            for i in range(9):
+                for j in range(9):
+                    if board[i][j] == '.':
+                        for num in map(str, range(1, 10)):
+                            if is_valid(board, i, j, num):
+                                board[i][j] = num
+                                if backtrack():
+                                    return True
+                                board[i][j] = '.'  # 回溯
+                        return False
+            return True
+
+        backtrack()
+
 
 if __name__ == '__main__':
     solution = Solution()
