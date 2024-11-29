@@ -76,8 +76,22 @@ def is_reverse(string: str) -> bool:
     return True
 
 
+@count_time
+def is_exist(string: str, val: str) -> bool:
+    """判断字符串中是否存在指定字符"""
+    left = 0
+    right = len(string) - 1
+    while left < right:
+        if string[left] == val or string[right] == val:
+            return True
+        left += 1
+        right -= 1
+    return False
+
+
 two_sum(numbers=[2, 7, 11, 15], target=13)
 remove_val(numbers=[random.randint(0, 10) for _ in range(100000)], val=random.randint(0, 10))
 merge_list(numbers1=[random.randint(0, 10) for _ in range(100000)],
            numbers2=[random.randint(0, 10) for _ in range(100000)])
 is_reverse(string='a' * 10000 + 'b' * 100000 + 'c' * 100 + 'd' * 100 + 'a' * 10000)
+is_exist(string='a' * 10000 + 'b' * 100000 + 'c' * 100 + 'd' * 100 + 'a' * 10000, val='b')
